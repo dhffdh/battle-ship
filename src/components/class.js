@@ -23,9 +23,6 @@ export class ship {
 
     }
 
-
-
-
     getRandomCords = function() {
         this.x = this.randomInteger(0,9);
         this.y = this.randomInteger(0,9);
@@ -53,24 +50,6 @@ export class ship {
             .attr({'stroke-width': '1px', fill: 'red', stroke: '#333'})
 
     };
-
-    /*static drawShip = function (ship,R) {
-        let side = 40;
-
-        let x_l,y_l;
-
-        if(ship.vertical){
-            x_l = 1;
-            y_l = ship.long;
-        }else{
-            x_l = ship.long;
-            y_l = 1;
-        }
-
-        ship.rect = R.rect((50 + side * ship.x), (50 + side * ship.y), side*x_l, side*y_l)
-            .attr({'stroke-width': '1px', fill: 'red', stroke: '#333'})
-
-    };*/
 
 }
 
