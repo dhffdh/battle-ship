@@ -39,8 +39,6 @@ export class ship {
         return rand;
     };*/
 
-
-
     drawShip(R) {
         let side = Floor.size;
         let x_l,y_l;
@@ -60,10 +58,17 @@ export class ship {
         this.rect.node.classList.add('b-ship');
 
 
-
         this.rect.dblclick(function () {
 
             this.self.vertical = !this.self.vertical;
+
+            if( !Floor.checkFloorAccess(this.self.x , this.self.y , this.self ) ){
+
+                this.self.vertical = !this.self.vertical;
+                return false;
+
+            }
+
 
             this.self.updateVertical();
 
@@ -77,13 +82,11 @@ export class ship {
     };
 
     updateCoords(){
-
         //console.log('updateCoords: ship',this.rect.node.classList );
 
         let newX = this.x * Floor.size + Floor.offsetX;
         let newY = this.y * Floor.size + Floor.offsetY;
 
-        //console.log('newX newY',newX,newY);
         this.rect.attr({x: newX , y: newY});
 
     };
@@ -105,14 +108,9 @@ export class ship {
             height: Floor.size*y_l,
         });
 
-
     };
 
-
-
-
 }
-
 
 export let Floor = {
 
@@ -241,7 +239,6 @@ export let Floor = {
         if(( x < 0 || y < 0 || x > this.maxX || y > this.maxY )){
             return false;
         }
-
         return true;
     },
     /**
@@ -254,7 +251,6 @@ export let Floor = {
     checkFloorAccess(x, y, currentShip){
 
         //console.log( 'checkFloorAccess', currentShip );
-
         for(let i = 0;i < currentShip.long; i++){
             let x_new,y_new;
             if(currentShip.vertical) {
@@ -264,9 +260,16 @@ export let Floor = {
                 x_new = x + i;
                 y_new = y;
             }
-            if( this.accessZone[y_new][x_new].access === false ){
+
+            if(!this.checkPosInFloor(x_new,y_new)){
                 return false;
+            }else{
+                if( this.accessZone[y_new][x_new].access === false ){
+                    return false;
+                }
             }
+
+
         }
 
         return true;

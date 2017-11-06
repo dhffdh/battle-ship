@@ -16,14 +16,11 @@
         </div>
 
 
-
-
         <a v-on:click="check" class="b-btn">check Engine</a>
 
-
-        <div>
+        <!--<div>
             <pre>{{ accessZone }}</pre>
-        </div>
+        </div>-->
 
     </div>
 </template>
