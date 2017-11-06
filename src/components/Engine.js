@@ -328,11 +328,8 @@ export let Engine = {
     getPosOnEnd(rect){
         //console.log('getPosOnMouseUp',rect);
 
-
         let x_pos = Math.round( ( rect.attr("x") - Floor.offsetX ) / Floor.size );
         let y_pos = Math.round( ( rect.attr("y") - Floor.offsetY ) / Floor.size );
-
-        //console.log('getPosOnEnd: x_pos y_pos',x_pos,y_pos);
 
         if(x_pos < 0){
             x_pos = 0;
@@ -362,11 +359,9 @@ export let Engine = {
      */
     checkNewPos(rect, coords){
 
-
         //console.log('checkNewPos rect.self',rect.self);
 
         Floor.fillAccessZone( this.arShips , rect.self );
-
 
         if(coords.x < 0|| coords.y < 0){
             return false;
@@ -378,8 +373,6 @@ export let Engine = {
         if( !Floor.checkFloorAccess(coords.x , coords.y , rect.self ) ){
             return false;
         }
-
-
 
         return true;
     },
