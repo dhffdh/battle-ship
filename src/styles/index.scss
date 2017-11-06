@@ -3,21 +3,16 @@ body{
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+
+
   color: #2c3e50;
   margin-top: 60px;
 }
 
-
-
-.b-canvas-wrapper{
-  background-color: #d0d0d0;
-  width: 600px;
-  height: 600px;
-  margin: 0 auto;
-}
-.b-logo{
-  margin-bottom: 2em;
+body *{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 
@@ -38,3 +33,98 @@ li {
 a {
   color: #42b983;
 }
+
+
+
+
+.b-container{
+  max-width: 880px;
+  margin: 0 auto;
+
+
+}
+.b-canvas-wrapper{
+  //background-color: #d0d0d0;
+  width: 400px;
+  height: 400px;
+  //margin: 0 auto;
+  margin-bottom: 2em;
+
+}
+
+
+.b-row{
+  display: flex;
+  margin: 0 -15px;
+}
+
+.b-col{
+
+  float: left;
+  padding: 0 15px;
+
+  &-left{
+    width: 50%;
+  }
+  &-right{
+    width: 50%;
+  }
+}
+
+
+
+
+
+
+
+.b-logo{
+  margin-bottom: 2em;
+  text-align: center;
+
+}
+
+
+
+.b-btn{
+
+  display: inline-block;
+  background-color: #444;
+  padding: 3px 10px;
+  color: #fff;
+  cursor: pointer;
+
+}
+
+.b-ship{
+
+  stroke: #00f;
+  fill: rgba(0,0,255,.1);
+
+
+
+  rx: 0;
+  ry: 0;
+
+  stroke-width: 2px;
+  cursor: pointer;
+
+
+  &--moveble{
+    //opacity: 0.8;
+
+    stroke: #05e500;
+    fill: rgba(30, 255, 0, 0.1);
+
+  }
+
+
+
+}
+
+.b-floor-grid{
+
+  &-item{
+    stroke: #B4B4FF;
+  }
+}
+
