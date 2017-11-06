@@ -27,6 +27,7 @@
     $ship-size: 36;
     $offset-size: 18;
 
+
     .b-markers{
         position: relative;
         &-letters,
@@ -49,16 +50,16 @@
         }
         &-letters{
             position: absolute;
-            left: #{$offset-size+2}px;
-            top: -#{$offset-size}px;
+            left: 30px;
+            top: -8px;
             li{
                 float: left;
             }
         }
         &-numbers{
             position: absolute;
-            left: -#{$offset-size}px;
-            top: #{$offset-size+2}px;
+            left: -9px;
+            top: 30px;
             li{
 
             }
