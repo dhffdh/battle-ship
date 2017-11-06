@@ -62,6 +62,7 @@ export class ship {
 
             this.self.vertical = !this.self.vertical;
 
+            //Проверка поля при смене вертикали короля
             if( !Floor.checkFloorAccess(this.self.x , this.self.y , this.self ) ){
 
                 this.self.vertical = !this.self.vertical;
@@ -69,9 +70,7 @@ export class ship {
 
             }
 
-
             this.self.updateVertical();
-
 
         });
 
@@ -241,7 +240,9 @@ export let Floor = {
         }
         return true;
     },
+
     /**
+     * Проверка поля на новые координаты x, y для корабля currentShip
      *
      * @param x
      * @param y
