@@ -39,6 +39,29 @@ export class ship {
         return rand;
     };*/
 
+    drawShadowShip(R) {
+
+        /*
+        let side = Floor.size;
+        let x_l,y_l;
+        if(this.vertical){
+            x_l = 1;
+            y_l = this.long;
+        }else{
+            x_l = this.long;
+            y_l = 1;
+        }
+        this.rect = R.rect( 0 , 0 , side*x_l, side*y_l)
+            .attr({
+                fill: 'white'
+            });
+        this.rect.node.classList.add('b-svg-ship','b-svg-ship-shadow');
+        this.rect.self = this;
+        this.updateCoords();
+        */
+
+    };
+
     drawShip(R) {
         let side = Floor.size;
         let x_l,y_l;
@@ -52,24 +75,19 @@ export class ship {
 
         this.rect = R.rect( - 100 , -100 , side*x_l, side*y_l)
             .attr({
-                fill: 'red'
+                fill: 'white'
             });
 
-        this.rect.node.classList.add('b-ship');
+        this.rect.node.classList.add('b-svg-ship');
 
 
         this.rect.dblclick(function () {
-
             this.self.vertical = !this.self.vertical;
-
             //Проверка поля при смене вертикали короля
-            if( !Floor.checkFloorAccess(this.self.x , this.self.y , this.self ) ){
-
+            if( !Floor.checkFloorAccess({x: this.self.x , y:this.self.y} , this.self ) ){
                 this.self.vertical = !this.self.vertical;
                 return false;
-
             }
-
             this.self.updateVertical();
 
         });
@@ -91,7 +109,7 @@ export class ship {
     };
 
     updateVertical(){
-        console.log('updateVertical',this);
+        //console.log('updateVertical',this);
 
         let x_l,y_l;
         if(this.vertical){
@@ -119,48 +137,40 @@ export let Floor = {
     offsetY: 30,
     maxX: 9,
     maxY: 9,
+    rivalPoints: [],
 
     demoCoords: [
-        {x:1,y:0,v: false},
-        {x:1,y:7,v: true},
-        {x:3,y:3,v: true},
-        {x:7,y:3,v: false},
-        {x:7,y:5,v: false},
-        {x:6,y:9,v: false},
-        {x:7,y:7,v: true},
-        {x:9,y:7,v: false},
-        {x:9,y:9,v: false},
-        {x:1,y:4,v: false},
+        {x:5,y:0,v:false},
+        {x:1,y:7,v:true},
+        {x:3,y:3,v:true},
+        {x:7,y:3,v:false},
+        {x:7,y:5,v:false},
+        {x:6,y:9,v:false},
+        {x:7,y:7,v:true},
+        {x:9,y:7,v:false},
+        {x:9,y:9,v:false},
+        {x:1,y:4,v:false},
     ],
 
     accessZone: [],
 
     drawBattleground(R){
-
         for (let j = 0; j < this.maxY + 1; j++) {
-
             this.accessZone[j] = [];
-
             for (let i = 0; i < this.maxX + 1; i++) {
-
                 this.accessZone[j][i] = {
                     access: true,
                     isShip: false
                 };
-
                 let rect = R.rect((this.offsetX + this.size * i), (this.offsetY + this.size * j), this.size, this.size)
                     .attr({
-                        'stroke-width': '1px',
-                        fill: '#fafafa',
-                        stroke: '#7474fd',
-                    })
-
-                rect.node.classList.add('b-floor-grid-item');
-
+                        fill: '#fff',
+                    });
+                rect.node.classList.add('b-svg-grid-item');
             }
         }
-        //console.log('accessZone',this.accessZone);
     },
+
     clearAccessZone(){
         for (let j = 0; j < this.maxY+ 1; j++) {
             for (let i = 0; i < this.maxX + 1; i++) {
@@ -214,7 +224,7 @@ export let Floor = {
                         for (let i_box = -1; i_box <= 1; i_box++) {
                             let i_new = i + i_box;
                             let j_new = j + j_box;
-                            if( this.checkPosInFloor(i_new, j_new)){
+                            if( this.checkPosInFloor({x:i_new, y:j_new})){
                                 if( this.accessZone[j_new][i_new].access === true ){
                                     this.accessZone[j_new][i_new].access = false;
                                     this.accessZone[j_new][i_new].isArea = true;
@@ -226,7 +236,6 @@ export let Floor = {
                 }
             }
         }
-
     },
     /**
      *
@@ -234,8 +243,8 @@ export let Floor = {
      * @param y
      * @returns {boolean}
      */
-    checkPosInFloor(x,y){
-        if(( x < 0 || y < 0 || x > this.maxX || y > this.maxY )){
+    checkPosInFloor(coords){
+        if(( coords.x < 0 || coords.y < 0 || coords.x > this.maxX || coords.y > this.maxY )){
             return false;
         }
         return true;
@@ -249,20 +258,21 @@ export let Floor = {
      * @param currentShip
      * @returns {boolean}
      */
-    checkFloorAccess(x, y, currentShip){
+    checkFloorAccess(coords, currentShip){
 
-        //console.log( 'checkFloorAccess', currentShip );
+        //console.log( 'checkFloorAccess coords', coords );
+
         for(let i = 0;i < currentShip.long; i++){
             let x_new,y_new;
             if(currentShip.vertical) {
-                y_new = y + i;
-                x_new = x;
+                y_new = coords.y + i;
+                x_new = coords.x ;
             }else{
-                x_new = x + i;
-                y_new = y;
+                x_new = coords.x  + i;
+                y_new = coords.y;
             }
 
-            if(!this.checkPosInFloor(x_new,y_new)){
+            if(!this.checkPosInFloor({x:x_new,y:y_new})){
                 return false;
             }else{
                 if( this.accessZone[y_new][x_new].access === false ){
@@ -278,27 +288,30 @@ export let Floor = {
 
 };
 
+
+
 export let Engine = {
 
-    LeftR: {}, // Поле игрока
+    R: {}, // Поле игрока
     RightR: {}, // Поле противника
-    arShips: [],
+    arShips: [], // Массив кораблей
+    shadowShip: {}, // Корабль-тень для эффекта привязки к сетке,
 
     onMove: function (dx,dy) {
         //console.log('onmove: dx,dy',dx,dy,this);
 
-        //let newX = Math.round( (this.ox + dx) / Floor.size ) * Floor.size - Floor.offsetX;
-        //let newY = Math.round( (this.oy + dy) / Floor.size ) * Floor.size - Floor.offsetX;
+        //let newX = this.ox + dx;
+        //let newY = this.oy + dy;
 
-        let newX = this.ox + dx;
-        let newY = this.oy + dy;
+        let gridX = (Math.round( ((this.ox + dx ) / Floor.size ) - 1) * Floor.size) + Floor.offsetX;
+        let gridY = (Math.round( ((this.oy + dy ) / Floor.size ) - 1) * Floor.size) + Floor.offsetY;
 
+        this.attr({x: gridX, y: gridY});
 
-        this.attr({x: newX, y: newY});
     },
     onStart: function (x,y,e) {
 
-        this.node.classList.add('b-ship--moveble');
+        this.node.classList.add('b-svg-ship--moveble');
 
         this.ox = this.attr("x");
         this.old_x = this.attr("x");
@@ -307,25 +320,31 @@ export let Engine = {
         this.old_y = this.attr("y");
 
 
+        //Engine.shadowShip.rect.ox = this.attr("x");
+        //Engine.shadowShip.rect.oy = this.attr("y");
+
+
         //console.log('onstart: this',this);
 
     },
     onEnd: function (e) {
 
 
-        this.node.classList.remove('b-ship--moveble');
+        this.node.classList.remove('b-svg-ship--moveble');
 
-        Engine.getPosOnEnd(this);
+        Engine.setCoordsOnEnd(this);
 
         this.self.updateCoords();
 
     },
 
     /**
-     * Колбэк
+     * Установка координат +
+     * Общая валидация/округление новых координат + проверка
+     *
      * @param rect
      */
-    getPosOnEnd(rect){
+    setCoordsOnEnd(rect){
         //console.log('getPosOnMouseUp',rect);
 
         let x_pos = Math.round( ( rect.attr("x") - Floor.offsetX ) / Floor.size );
@@ -370,7 +389,7 @@ export let Engine = {
             return false;
         }
 
-        if( !Floor.checkFloorAccess(coords.x , coords.y , rect.self ) ){
+        if( !Floor.checkFloorAccess(coords , rect.self ) ){
             return false;
         }
 
@@ -379,9 +398,7 @@ export let Engine = {
 
     start: function () {
 
-        Floor.drawBattleground(this.LeftR);
-        Floor.drawBattleground(this.RightR);
-
+        Floor.drawBattleground(this.R);
 
 
         let i = 0;
@@ -397,10 +414,9 @@ export let Engine = {
         }
 
         for ( const shipItem of this.arShips  ){
-
             //console.log('shipItem',shipItem);
 
-            shipItem.drawShip(this.LeftR);
+            shipItem.drawShip(this.R);
             shipItem.rect.drag(
                 this.onMove,
                 this.onStart,
@@ -410,9 +426,6 @@ export let Engine = {
 
         Floor.fillAccessZone( this.arShips  );
 
-
     }
-
-
 
 };
