@@ -53,32 +53,16 @@ body{
 
 
 .b-svg-ship{
-
   stroke: #00f;
-  fill: rgba(0,0,255,.1);
-
-
-
+  fill: rgba(0,0,255,.05);
   rx: 0;
   ry: 0;
-
   stroke-width: 2px;
   cursor: pointer;
   shape-rendering: crispEdges;
 
-
-
   &--moveble{
     //opacity: 0.2;
-
-    stroke: #05e500;
-    fill: rgba(30, 255, 0, 0.1);
-
-  }
-
-  &-shadow{
-    opacity: 0.5;
-
 
     stroke: #05e500;
     fill: rgba(30, 255, 0, 0.1);
@@ -126,13 +110,13 @@ body{
     border-collapse: collapse;
     cursor: default;
     display: block;
-    position: relative;
+    //position: relative;
     width: 400px;
     height: 400px;
 
-    margin-left: 30px;
-    margin-top: 30px;
-
+    position: absolute;
+    left: 29px;
+    top: 29px;
   }
 
   &-item{
@@ -146,24 +130,17 @@ body{
       position: relative;
       height: 35px;
       width: 35px;
-
-
       font-size: 12px;
 
     }
 
-
-
-
     &--empty:hover &{
-
 
       &-content{
         &:after {
           border: 2px solid #40BF44;
           background: rgba(64,191,68,.05);
           position: absolute;
-
 
           width: #{$size}px;
           height: #{$size}px;
@@ -185,10 +162,94 @@ body{
 
     &--miss &{
 
-      background: red;
+      &-content{
+        background-color: #f2f4f8;
+      }
+      &-status{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 4px;
+        width: 4px;
+        background: #333;
+        border-radius: 50%;
+        margin-top: -2px;
+        margin-left: -2px;
+      }
+    }
+    &--miss-auto &{
+
+      &-status{
+        background: silver;
+      }
+    }
+
+
+    &--hit &{
 
       &-content{
-        background-color: #d0d2d6;
+        background: 0 0;
+        position: relative;
+      }
+
+      &-status{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        overflow: hidden;
+        box-sizing: border-box;
+        background: none;
+        margin-left: 0;
+        margin-top: 0;
+        border-radius: 0;
+
+        &:before,
+        &:after{
+          content: "";
+          position: absolute;
+          z-index: -1;
+          background: red;
+          -webkit-transform: rotate(-45deg);
+          -moz-transform: rotate(-45deg);
+          -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+        }
+        &:before{
+          left: 50%;
+          width: 1px;
+          top: -25%;
+          height: 150%;
+          margin-top: 1px;
+        }
+        &:after{
+          top: 50%;
+          height: 1px;
+          left: -25%;
+          width: 150%;
+          margin-left: -1px;
+        }
+      }
+    }
+
+
+    &--done &{
+      &-content{
+
+        &:after {
+          content: "";
+          display: block;
+          height: #{$size+2}px;
+          width: #{$size+2}px;
+          border: 1px solid red;
+          margin: -1px;
+          position: absolute;
+          z-index: 3;
+          top: 0;
+          left: 0;
+        }
       }
     }
 
@@ -212,4 +273,50 @@ body{
 
 
   }
+}
+
+.b-ship{
+  z-index: 2;
+  left: 0;
+  top: 0;
+  position: absolute!important;
+  margin: -2px;
+
+  border: 2px solid;
+
+  width: #{1*($size) }px;
+  height: #{1*($size) }px;
+
+  box-sizing: content-box;
+
+  border-color: #00f;
+  background: rgba(0,0,255,.05);
+
+  &--done{
+    border-color: red;
+    background: rgba(255,0,0,.05);
+  }
+
+  &--pos{
+
+    @for $i from 0 through 4 {
+
+      &-v-#{$i} {
+        width: #{1*($size) }px;
+        height: #{$i*($size+1)-1 }px;
+      }
+      &-h-#{$i} {
+        width: #{$i*($size+1)-1 }px;
+        height: #{1*($size) }px;
+      }
+    }
+
+
+  }
+
+
+
+
+
+
 }

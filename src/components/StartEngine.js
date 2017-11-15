@@ -9,11 +9,9 @@ export class ship {
     index = false;
 
     constructor(params = {}) {
-
         if(params.long){
             this.long = params.long;
         }
-
         if( params.x > -1 && params.y > -1){
             this.x = params.x;
             this.y = params.y;
@@ -24,9 +22,9 @@ export class ship {
         if(params.index > -1){
             this.index = params.index;
         }
-
         //console.log('constructor params this', params , this);
     }
+
 
     /*getRandomCords() {
         this.x = this.randomInteger(0,9);
@@ -39,41 +37,20 @@ export class ship {
         return rand;
     };*/
 
-    drawShadowShip(R) {
-
-        /*
-        let side = Floor.size;
-        let x_l,y_l;
-        if(this.vertical){
-            x_l = 1;
-            y_l = this.long;
-        }else{
-            x_l = this.long;
-            y_l = 1;
-        }
-        this.rect = R.rect( 0 , 0 , side*x_l, side*y_l)
-            .attr({
-                fill: 'white'
-            });
-        this.rect.node.classList.add('b-svg-ship','b-svg-ship-shadow');
-        this.rect.self = this;
-        this.updateCoords();
-        */
-
-    };
 
     drawShip(R) {
         let side = Floor.size;
         let x_l,y_l;
         if(this.vertical){
-            x_l = 1;
-            y_l = this.long;
+            x_l = side+1;
+            y_l = side*this.long+1;
         }else{
-            x_l = this.long;
-            y_l = 1;
+            x_l = side*this.long+1;
+            y_l = side+1;
         }
 
-        this.rect = R.rect( - 100 , -100 , side*x_l, side*y_l)
+
+        this.rect = R.rect( - 100 , -100 , x_l, y_l)
             .attr({
                 fill: 'white'
             });
@@ -104,7 +81,7 @@ export class ship {
         let newX = this.x * Floor.size + Floor.offsetX;
         let newY = this.y * Floor.size + Floor.offsetY;
 
-        this.rect.attr({x: newX , y: newY});
+        this.rect.attr({x: newX-1 , y: newY-1});
 
     };
 
@@ -293,9 +270,8 @@ export let Floor = {
 export let Engine = {
 
     R: {}, // Поле игрока
-    RightR: {}, // Поле противника
     arShips: [], // Массив кораблей
-    shadowShip: {}, // Корабль-тень для эффекта привязки к сетке,
+    run: false,
 
     onMove: function (dx,dy) {
         //console.log('onmove: dx,dy',dx,dy,this);
@@ -306,7 +282,7 @@ export let Engine = {
         let gridX = (Math.round( ((this.ox + dx ) / Floor.size ) - 1) * Floor.size) + Floor.offsetX;
         let gridY = (Math.round( ((this.oy + dy ) / Floor.size ) - 1) * Floor.size) + Floor.offsetY;
 
-        this.attr({x: gridX, y: gridY});
+        this.attr({x: gridX-1, y: gridY-1});
 
     },
     onStart: function (x,y,e) {
@@ -319,16 +295,8 @@ export let Engine = {
         this.oy = this.attr("y");
         this.old_y = this.attr("y");
 
-
-        //Engine.shadowShip.rect.ox = this.attr("x");
-        //Engine.shadowShip.rect.oy = this.attr("y");
-
-
-        //console.log('onstart: this',this);
-
     },
     onEnd: function (e) {
-
 
         this.node.classList.remove('b-svg-ship--moveble');
 
@@ -397,6 +365,13 @@ export let Engine = {
     },
 
     start: function () {
+
+        if(this.run){
+            return 1;
+        }
+        this.run = true;
+
+        this.R = Raphael("start-battlefield", 400, 400);
 
         Floor.drawBattleground(this.R);
 

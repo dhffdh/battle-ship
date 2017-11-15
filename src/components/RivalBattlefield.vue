@@ -2,12 +2,14 @@
     <div>
         <b-markers></b-markers>
 
+
         <div class="b-battlefield b-canvas-wrapper">
 
             <div class="b-grid">
                 <table class="b-grid-table">
                     <tbody>
                         <tr>
+
                             <td v-for="gridItem in items"
                                 :key="gridItem.index"
                                 class="b-grid-item"
@@ -15,8 +17,10 @@
                                     'b-grid-item--miss': gridItem.miss ,
                                     'b-grid-item--miss-auto': gridItem.missAuto ,
                                     'b-grid-item--hit': gridItem.hit ,
-                                    'b-grid-item--done': gridItem.done ,
+                                    'b-grid-item--empty': gridItem.empty ,
+                                    'b-grid-item--done': gridItem.hit ,
                                 }]"
+                                @click="onGridItemClick(gridItem)"
                             >
                                 <div class="b-grid-item-content">
                                     <span class="b-grid-item-status"></span>
@@ -37,7 +41,7 @@
         </div>
 
         <div class="mt-2">
-            Ваше поле
+            Поле противника
         </div>
 
     </div>
@@ -46,32 +50,31 @@
 <script>
     import Markers from './Markers'
     import Store from './Store'
-    _ = require('lodash');
 
 
     class gridShip{
+
         vertical = false;
         long = 1;
-        done = false;
 
         constructor(params = {}){
-            if(params.done){
-                this.done = params.done;
-            }
+
             if(params.long){
                 this.long = params.long;
             }
             if(params.vertical){
                 this.vertical = params.vertical;
             }
+
         };
+
         getClasses(){
             let v = this.vertical ? 'b-ship--pos-v-'+this.long: 'b-ship--pos-h-'+this.long;
-            let d = this.done ? 'b-ship--done':'';
-            return [v,d];
+            return [v];
         };
 
     }
+
 
 
     export default {
@@ -82,6 +85,7 @@
             }
         },
         computed: {
+
             items(){
                 return this.gridItems;
             }
@@ -92,6 +96,7 @@
             for( let j = 0; j < 10; j++){
                 for( let i = 0; i < 10; i++){
 
+
                     this.gridItems.push(
                         {
                             x: i,
@@ -100,49 +105,52 @@
                             miss: false,
                             missAuto: false,
                             hit: false,
-                            done: false,
-                            empty: false,
+                            empty: true,
                             ship: false,
                             classes: ['b-grid-item--x-'+i,'b-grid-item--y-'+j]
                         }
                     );
+
+
                     index++;
                 }
             }
 
-            this.createMyShips();
-
         },
         methods: {
 
-            createMyShips(){
+            onGridItemClick(gridItem){
 
-                console.log('createMyShips',Store);
+                Store.count++;
 
-                let ships = Store.startShips;
 
-                for( const ship of ships){
+                gridItem.empty = false;
 
-                    let gridShipEl = _.find(this.gridItems, function(obj) {
-                        return obj.x === ship.x && obj.y === ship.y;
-                    });
-
-                    gridShipEl.ship = new gridShip({
-                        vertical: ship.vertical,
-                        long: ship.long,
-                        done: false
-                    });
-
-                    //console.log('ship',ship);
-                    //console.log('gridShip',gridShip);
-
+                if(gridItem.miss){
+                    gridItem.miss = false;
+                    gridItem.hit = true;
+                }else{
+                    gridItem.miss = true;
+                    gridItem.hit = false;
                 }
 
-            }
+                /*if(!gridItem.ship){
+                    gridItem.ship = new gridShip({
+                        vertical: true,
+                        long: 3,
+                    });
+                }*/
 
+                //gridItem.missAuto = !gridItem.missAuto;
+                //console.log('gridItem:',gridItem);
+            }
         },
         components: {
             'b-markers': Markers,
         }
     }
 </script>
+
+<style lang="scss">
+
+</style>

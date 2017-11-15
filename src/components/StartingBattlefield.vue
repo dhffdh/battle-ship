@@ -1,5 +1,7 @@
 <template>
     <div>
+        <b-markers></b-markers>
+
         <div id="start-battlefield" class="b-canvas-wrapper b-svg-grid"></div>
 
 
@@ -8,7 +10,7 @@
         </div>
 
 
-        <button v-on:click="check" class="btn btn-secondary">check Engine</button>
+        <!--<button v-on:click="check" class="btn btn-secondary">check Engine</button>-->
 
         <!--<div>
           <pre>{{ accessZone }}</pre>
@@ -20,33 +22,30 @@
 </template>
 
 <script>
-    import { Floor , Engine } from './StartEngine'
     import Markers from './Markers'
+    import { Engine } from './StartEngine'
+    import Store from './Store'
 
 
     export default {
         name: 'StartingBattlefield',
         data () {
             return {
+
             }
         },
         mounted: function () {
-
-            Engine.R = Raphael("start-battlefield", 400, 400);
             Engine.start();
+            Store.startShips = Engine.arShips;
         },
         methods: {
             check: function (event) {
 
                 console.log('Engine',Engine);
-
             }
         },
         components: {
+            'b-markers': Markers,
         }
     }
 </script>
-
-<style lang="scss">
-
-</style>
