@@ -1,8 +1,10 @@
 export default {
 
 
-    name: 123,
+    name: 'Store',
     count: 0,
     startShips: [],
+    gridItems: [],
+    rivalGridItems: [],
 
 }

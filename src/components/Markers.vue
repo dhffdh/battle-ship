@@ -17,8 +17,21 @@
         data () {
             return {
                 letters: ['а','б','в','г','д','e','ж','з','и','к',],
-                numbers: ['1','2','3','4','5','6','7','8','9','10',]
+                numbers: ['1','2','3','4','5','6','7','8','9','10',],
+
+                handler: function(){
+                    console.log('hideDrop event');
+                }
             }
+        },
+        methods:{
+
+        },
+        mounted(){
+            this.$root.$on('hideDrop', this.handler );
+        },
+        beforeDestroy(){
+            this.$root.$off('hideDrop', this.handler );
         }
     }
 </script>

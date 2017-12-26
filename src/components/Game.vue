@@ -3,12 +3,12 @@
 
         <div class="b-row">
             <div class="b-col b-col-left">
-                <b-start-bf v-show="showStartBattlefield" ></b-start-bf>
+                <b-start-bf v-if="showStartBattlefield" ></b-start-bf>
                 <b-my-bf v-if="showMyBattlefield" ></b-my-bf>
             </div>
 
             <div class="b-col b-col-right">
-                <b-rival-bf></b-rival-bf>
+                <b-rival-bf v-if="showMyBattlefield" ></b-rival-bf>
             </div>
         </div>
 
@@ -63,6 +63,16 @@
             'b-start-bf': StartingBattlefield,
             'b-rival-bf': RivalBattlefield,
             'b-my-bf': Battlefield,
+        },
+        mounted() {
+
+            window.addEventListener('click', () => {
+
+                console.log('dispatchEvent hideDrop');
+
+                this.$root.$emit('hideDrop');
+
+            });
         }
 
     }

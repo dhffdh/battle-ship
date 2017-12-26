@@ -78,38 +78,40 @@
         name: 'Battlefield',
         data () {
             return {
-                gridItems: []
+                //gridItems: []
             }
         },
         computed: {
             items(){
-                return this.gridItems;
+                return Store.gridItems;
             }
         },
         created: function () {
 
-            let index = 0;
-            for( let j = 0; j < 10; j++){
-                for( let i = 0; i < 10; i++){
+            if(Store.gridItems.length < 1){
 
-                    this.gridItems.push(
-                        {
-                            x: i,
-                            y: j,
-                            index: index,
-                            miss: false,
-                            missAuto: false,
-                            hit: false,
-                            done: false,
-                            empty: false,
-                            ship: false,
-                            classes: ['b-grid-item--x-'+i,'b-grid-item--y-'+j]
-                        }
-                    );
-                    index++;
+                let index = 0;
+                for( let j = 0; j < 10; j++){
+                    for( let i = 0; i < 10; i++){
+
+                        Store.gridItems.push(
+                            {
+                                x: i,
+                                y: j,
+                                index: index,
+                                miss: false,
+                                missAuto: false,
+                                hit: false,
+                                done: false,
+                                empty: false,
+                                ship: false,
+                                classes: ['b-grid-item--x-'+i,'b-grid-item--y-'+j]
+                            }
+                        );
+                        index++;
+                    }
                 }
             }
-
             this.createMyShips();
 
         },
@@ -117,13 +119,13 @@
 
             createMyShips(){
 
-                console.log('createMyShips',Store);
+
 
                 let ships = Store.startShips;
 
                 for( const ship of ships){
 
-                    let gridShipEl = _.find(this.gridItems, function(obj) {
+                    let gridShipEl = _.find(Store.gridItems, function(obj) {
                         return obj.x === ship.x && obj.y === ship.y;
                     });
 
@@ -138,6 +140,9 @@
 
                 }
 
+                //Store.gridItems = this.gridItems;
+
+                console.log('createMyShips',Store);
             }
 
         },
