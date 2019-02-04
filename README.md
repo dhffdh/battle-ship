@@ -1,6 +1,6 @@
 # Battle-Ship game on Svg and Vue.js
 
-Alpha versia. Game is not completed.
+Alpha version. game is not completed.
 
 Original game: http://ru.battleship-game.org/
 
