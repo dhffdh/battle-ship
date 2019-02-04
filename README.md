@@ -4,5 +4,5 @@ Game is not completed.
 
 Original game: http://ru.battleship-game.org/
 
-demo: 
+demo: https://dhffdh.github.io/battle-ship/
 
